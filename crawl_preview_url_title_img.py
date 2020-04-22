@@ -77,7 +77,7 @@ def parse_html(html):
     data = []
     for each in selector.xpath('//div[@class="row"]/ul/li'):
         url = each.xpath('header/h3/a/@href')[0]
-        title = each.xpath('a[@class="cover"]/img/@title')[0].replace('\\', '_')
+        title = each.xpath('a[@class="cover"]/img/@title')[0].replace('\\', '_').replace('/', '_')
         img = each.xpath('a[@class="cover"]/img/@data-src')[0] if each.xpath('a[@class="cover"]/img/@data-src') else each.xpath('a[@class="cover"]/img/@src')[0]
         data.append([url, title, img])
     return data
