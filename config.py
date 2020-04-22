@@ -32,3 +32,10 @@ PARAMS_LIST = {
     'ft': '0',          # 应该是 高清/无码/。。。
     'p': '7'            # 当前页
 }
+
+
+# file
+
+SEED_LIST = './seeds_list.txt'
+
+PATH_LIST = './Images'

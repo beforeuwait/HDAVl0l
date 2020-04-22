@@ -23,20 +23,22 @@ from config import HEADERS_LIST
 from config import PARAMS_LIST
 from config import PROXY
 from config import REFERER_LIST
+from config import SEED_LIST
+from config import PATH_LIST
 
 
 def input_command():
     # 启动时候接收参数
-    search = input('请输入分类:\t')
+    key_word = input('请输入分类:\t')
     pages = int(input('请输入搜索页数:\t'))
 
-    print('当前接收到的参数为:\t{0}\t请求页数为:\t{1}'.format(search, pages))
-    check_file_exists(search)
-    crawl_data(search, int(pages))
+    print('当前接收到的参数为:\t{0}\t请求页数为:\t{1}'.format(key_word, pages))
+    check_file_exists(key_word)
+    crawl_data(key_word, int(pages))
 
 
-def check_file_exists(search):
-    path = './{}'.format(search)
+def check_file_exists(key_word):
+    path = '{0}/{1}'.format(PATH_LIST, key_word)
     if not os.path.exists(path):
         print('目录:\t{}\t不存在,创建目录'.format(path))
         os.mkdir(path)
@@ -59,7 +61,7 @@ def crawl_data(key_word, pages):
             for each in data:
                 if each[0] not in seed_set:
                     print(each, '未下载')
-                    with open('./seeds_list.txt', 'a', encoding='utf-8') as f:
+                    with open(SEED_LIST, 'a', encoding='utf-8') as f:
                         count += 1
                         print(str(count) + '\u0001' + '\u0001'.join(each))
                         f.write(str(count) + '\u0001' + '\u0001'.join(each) + '\n')
@@ -109,7 +111,7 @@ def download_cover(count, key_word, name,url):
             resp = requests.get(url=url, proxies=PROXY)
             if resp.status_code < 300:
                 cnt = resp.content
-                with open('./{0}/{1}_{2}.jpg'.format(key_word, count, name), 'wb') as f:
+                with open('{0}/{1}/{2}_{3}.jpg'.format(PATH_LIST, key_word, count, name), 'wb') as f:
                     f.write(cnt)
                 break
         except Exception as e:
@@ -120,7 +122,7 @@ def download_cover(count, key_word, name,url):
 
 
 def read_seeds_list_count_num():
-    seeds_set = set([i.strip().split('\u0001')[1] for i in open('./seeds_list.txt', 'r', encoding='utf-8')])
+    seeds_set = set([i.strip().split('\u0001')[1] for i in open(SEED_LIST, 'r', encoding='utf-8')])
     return seeds_set, len(seeds_set)
 
 if __name__ == '__main__':

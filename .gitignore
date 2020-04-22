@@ -1,3 +1,6 @@
 demo.py
-__ptcache__/
+__pycache__/
 idea/
+Images/
+*.pyc
+__pycache__/config.cpython-37.pyc
