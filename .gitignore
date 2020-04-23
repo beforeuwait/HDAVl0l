@@ -4,5 +4,3 @@ Images/
 .DS_Store
 .dist/
 __pycache__/
-temp_ts/
-video/

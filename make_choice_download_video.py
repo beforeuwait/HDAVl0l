@@ -95,7 +95,7 @@ def download_video(path):
     多进程为主
     """
     count = 1
-    pool = Pool(30)
+    pool = Pool(10)
     for i in open(path, 'r', encoding='utf-8'):
         info = i.strip()
         if info.startswith('http'):
@@ -153,6 +153,7 @@ def veriy_tmp_file(n):
 
 
 def do_download_video(url, count):
+    time.sleep(0.1)
     print('接收到任务:\t{}\t开始下载'.format(count))
     cnt = do_no_headers_request(url)
     if cnt:
@@ -223,10 +224,10 @@ def do_simple_request(referer, params):
             if resp.status_code < 300:
                 html = resp.content.decode('utf-8')
                 break
-            time.sleep(3)
+            time.sleep(5)
         except Exception as e:
             print('请求出错', e)
-            time.sleep(5)
+            time.sleep(10)
         retry -= 1
     return html
 
@@ -241,10 +242,10 @@ def do_request(url):
             if resp.status_code < 300:
                 html = resp.content.decode('utf-8')
                 break
-            time.sleep(3)
+            time.sleep(5)
         except Exception as e:
             print('请求出错', e)
-            time.sleep(5)
+            time.sleep(10)
         retry -= 1
     return html
 
@@ -258,10 +259,10 @@ def do_no_headers_request(url):
             if resp.status_code < 300:
                 html = resp.content
                 break
-            time.sleep(3)
+            time.sleep(5)
         except Exception as e:
             print('请求出错', e)
-            time.sleep(5)
+            time.sleep(10)
         retry -= 1
     return html
 
