@@ -1,5 +1,4 @@
 demo.py
-__pycache__/
-idea/
+.idea/
 Images/
-*.pyc
+.DS_Store
