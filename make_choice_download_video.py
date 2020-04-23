@@ -274,5 +274,4 @@ def run():
 
 
 if __name__ == '__main__':
-    # run()
-    download_video('./real_m3u8/demo.m3u8')
+    run()
