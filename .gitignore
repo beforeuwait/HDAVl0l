@@ -2,3 +2,4 @@ demo.py
 .idea/
 Images/
 .DS_Store
+.dist/
