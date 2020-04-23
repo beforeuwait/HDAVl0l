@@ -95,12 +95,12 @@ def download_video(path):
     多进程为主
     """
     count = 1
-    pool = Pool(50)
+    pool = Pool(30)
     for i in open(path, 'r', encoding='utf-8'):
         info = i.strip()
         if info.startswith('http'):
             # do_download_video(info, count)
-            pool.apply_async(download_video, (info, count))
+            pool.apply_async(do_download_video, (info, count))
             count += 1
     pool.close()
     pool.join()
