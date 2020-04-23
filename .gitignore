@@ -4,3 +4,7 @@ Images/
 .DS_Store
 .dist/
 __pycache__/
+temp_ts/
+video/
+real_m3u8/
+temp_m3u8/

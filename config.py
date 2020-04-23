@@ -51,7 +51,9 @@ VIDEO_FILE = './video'
 
 ############### 下载视频
 
-URL_1 = 'https://cn.ax101.cc/api/video'
+# URL_1 = 'https://cn.ax101.cc/api/video'
+
+URL_1 = 'https://avhd101.com/api/video'
 
 REFERER_1 = 'https://cn.ax101.cc'
 
@@ -60,24 +62,37 @@ HEADERS_VIDEO = {
     'Accept-Encoding': 'gzip, deflate',
     'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
     'Connection': 'keep-alive',
-    'Host': 'cn.ax101.cc',
-    'Referer': 'https://cn.ax101.cc/watch?v=OanBaDlJXbk',
+    'Host': 'avhd101.com',
+    'Referer': 'https://avhd101.com/watch?v=OanBaDlJXbk',
     'Sec-Fetch-Dest': 'empty',
     'Sec-Fetch-Mode': 'cors',
     'Sec-Fetch-Site': 'same-origin',
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36',
     'X-Requested-With': 'XMLHttpRequest'
 }
+
+HEADERS_M3U8 = {
+    'Host': 'play.avhd101.com',
+    'accept': '*/*',
+    'accept-encoding': 'gzip, deflate',
+    'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8',
+    'origin': 'https://avhd101.com',
+    # 'referer': 'https://avhd101.com/watch?v=6vo8K7l68k4',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-site': 'same-site',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36'
+}
 # sha256
 
-S1 = 'avHDl0l.com.av'
-IP = '222.209.226.142'
+# S1 = 'avHDl0l.com.av'
+S1 = 'AvHDl0l.com.aV'
+IP = '47.244.148.48'
 UX = '2120015'
 
 
 PARAMS_1 = {
     'v': 'OanBaDlJXbk',         # 视频编号
-    'ip': '222.209.226.142',    # ip
+    'ip': '47.244.148.48',    # ip
     't': '1587610559',          # 时间戳
     'ux': UX,            # 用户id
     's': '2ab0d8e520e8bcb8fa4315240912fb21709e00cae5507f0c7c9fb7019ad3eef1',    # 计算出的参数

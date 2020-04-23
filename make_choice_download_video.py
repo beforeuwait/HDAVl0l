@@ -35,6 +35,8 @@ from config import TMP_M3U8
 from config import REAL_M3U8
 from config import TMP_TS
 from config import VIDEO_FILE
+from config import IP
+from config import HEADERS_M3U8
 from multiprocessing import Pool
 
 
@@ -102,6 +104,7 @@ def download_video(path):
             # do_download_video(info, count)
             pool.apply_async(do_download_video, (info, count))
             count += 1
+    print('该视频长度为:\t{}'.format(count))
     pool.close()
     pool.join()
     # 开始验证完整
@@ -180,9 +183,10 @@ def m3u8_handler(uri, title):
         with open(m3u8_1_path, 'w', encoding='utf-8') as f:
             f.write(m3u8_1)
         hd, uri = deal_m3u8_1(m3u8_1_path)
-        print('当前解析出最高分辨率为:\tp'.format(hd))
+        url = url.split('main')[0]
+        print('当前解析出最高分辨率为:\t{}p'.format(hd))
         print('开始下载当前m3u8文件....注意该m3u8文件有时效性')
-        m3u8_2 = do_request(''.join([REFERER_1, uri]))
+        m3u8_2 = do_request(''.join([url, uri]))
         m3u8_2_path = '{}/{}.m3u8'.format(REAL_M3U8, title)
         with open(m3u8_2_path, 'w', encoding='utf-8') as f:
             f.write(m3u8_2)
@@ -206,7 +210,7 @@ def deal_m3u8_1(path):
 
 def do_sha256(video_code):
     tm = int(time.time())
-    cr = '{}{}{}{}'.format(S1, video_code, tm, UX)
+    cr = '{}{}{}{}{}'.format(S1, video_code, IP, tm, UX)
     s = hashlib.sha256(cr.encode()).hexdigest()
     return s, tm
 
@@ -218,13 +222,14 @@ def do_simple_request(referer, params):
     html = None
     while retry > 0:
         try:
-            resp = ssn.get(url=URL_1, headers=headers, params=params)
+            resp = ssn.get(url=URL_1, headers=headers, params=params, proxies=PROXY)
             print(resp.status_code)
             print(resp.url)
+            print(resp.text)
             if resp.status_code < 300:
                 html = resp.content.decode('utf-8')
                 break
-            time.sleep(5)
+            time.sleep(1)
         except Exception as e:
             print('请求出错', e)
             time.sleep(10)
@@ -234,11 +239,11 @@ def do_simple_request(referer, params):
 
 def do_request(url):
     retry = 5
-    headers = HEADERS_VIDEO
+    headers = HEADERS_M3U8
     html = None
     while retry > 0:
         try:
-            resp = ssn.get(url=url, headers=headers)
+            resp = ssn.get(url=url, headers=headers, proxies=PROXY)
             if resp.status_code < 300:
                 html = resp.content.decode('utf-8')
                 break
@@ -255,7 +260,7 @@ def do_no_headers_request(url):
     html = None
     while retry > 0:
         try:
-            resp = ssn.get(url=url)
+            resp = requests.get(url=url, proxies=PROXY)
             if resp.status_code < 300:
                 html = resp.content
                 break
