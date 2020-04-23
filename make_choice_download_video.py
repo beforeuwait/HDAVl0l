@@ -183,10 +183,9 @@ def m3u8_handler(uri, title):
         with open(m3u8_1_path, 'w', encoding='utf-8') as f:
             f.write(m3u8_1)
         hd, uri = deal_m3u8_1(m3u8_1_path)
-        url = url.split('main')[0]
         print('当前解析出最高分辨率为:\t{}p'.format(hd))
         print('开始下载当前m3u8文件....注意该m3u8文件有时效性')
-        m3u8_2 = do_request(''.join([url, uri]))
+        m3u8_2 = do_request(''.join([REFERER_1, uri]))
         m3u8_2_path = '{}/{}.m3u8'.format(REAL_M3U8, title)
         with open(m3u8_2_path, 'w', encoding='utf-8') as f:
             f.write(m3u8_2)
@@ -210,7 +209,8 @@ def deal_m3u8_1(path):
 
 def do_sha256(video_code):
     tm = int(time.time())
-    cr = '{}{}{}{}{}'.format(S1, video_code, IP, tm, UX)
+    # cr = '{}{}{}{}{}'.format(S1, video_code, IP, tm, UX)
+    cr = '{}{}{}{}'.format(S1, video_code, tm, UX)
     s = hashlib.sha256(cr.encode()).hexdigest()
     return s, tm
 
@@ -222,10 +222,8 @@ def do_simple_request(referer, params):
     html = None
     while retry > 0:
         try:
-            resp = ssn.get(url=URL_1, headers=headers, params=params, proxies=PROXY)
+            resp = ssn.get(url=URL_1, headers=headers, params=params)
             print(resp.status_code)
-            print(resp.url)
-            print(resp.text)
             if resp.status_code < 300:
                 html = resp.content.decode('utf-8')
                 break
@@ -239,11 +237,11 @@ def do_simple_request(referer, params):
 
 def do_request(url):
     retry = 5
-    headers = HEADERS_M3U8
+    headers = HEADERS_VIDEO
     html = None
     while retry > 0:
         try:
-            resp = ssn.get(url=url, headers=headers, proxies=PROXY)
+            resp = ssn.get(url=url, headers=headers)
             if resp.status_code < 300:
                 html = resp.content.decode('utf-8')
                 break
@@ -260,7 +258,7 @@ def do_no_headers_request(url):
     html = None
     while retry > 0:
         try:
-            resp = requests.get(url=url, proxies=PROXY)
+            resp = requests.get(url=url)
             if resp.status_code < 300:
                 html = resp.content
                 break

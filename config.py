@@ -51,9 +51,9 @@ VIDEO_FILE = './video'
 
 ############### 下载视频
 
-# URL_1 = 'https://cn.ax101.cc/api/video'
+URL_1 = 'https://cn.ax101.cc/api/video'
 
-URL_1 = 'https://avhd101.com/api/video'
+# URL_1 = 'https://avhd101.com/api/video'
 
 REFERER_1 = 'https://cn.ax101.cc'
 
@@ -62,8 +62,8 @@ HEADERS_VIDEO = {
     'Accept-Encoding': 'gzip, deflate',
     'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
     'Connection': 'keep-alive',
-    'Host': 'avhd101.com',
-    'Referer': 'https://avhd101.com/watch?v=OanBaDlJXbk',
+    'Host': 'cn.ax101.cc',
+    'Referer': 'https://cn.ax101.cc/watch?v=OanBaDlJXbk',
     'Sec-Fetch-Dest': 'empty',
     'Sec-Fetch-Mode': 'cors',
     'Sec-Fetch-Site': 'same-origin',
@@ -84,8 +84,8 @@ HEADERS_M3U8 = {
 }
 # sha256
 
-# S1 = 'avHDl0l.com.av'
-S1 = 'AvHDl0l.com.aV'
+S1 = 'avHDl0l.com.av'
+# S1 = 'AvHDl0l.com.aV'
 IP = '47.244.148.48'
 UX = '2120015'
 
