@@ -10,11 +10,14 @@ PROXY = {
 # 下载 列表
 
 URL_ORIGIN = 'https://avhd101.com/search'
+# URL_ORIGIN = 'https://cn.ax101.cc/search'
+# REFERER_LIST = 'https://cn.ax101.cc/search?q={0}&ft=0&p={1}'
 REFERER_LIST = 'https://avhd101.com/search?q={0}&ft=0&p={1}'
 
 
 HEADERS_LIST = {
     'HOST': 'avhd101.com',
+    # 'HOST': 'cn.ax101.cc',
     'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
     'accept-encoding': 'gzip, deflate',
     'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8',
@@ -47,6 +50,8 @@ REAL_M3U8 = './real_m3u8'
 TMP_TS = './temp_ts'
 
 VIDEO_FILE = './video'
+
+ALREADY = './already_crawl.txt'
 
 
 ############### 下载视频

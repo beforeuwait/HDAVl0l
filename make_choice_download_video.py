@@ -37,6 +37,7 @@ from config import TMP_TS
 from config import VIDEO_FILE
 from config import IP
 from config import HEADERS_M3U8
+from config import ALREADY
 from multiprocessing import Pool
 
 
@@ -73,10 +74,14 @@ def deal_cookie(cookie_str):
 
 def load_seeds(code_list):
     seeds = []
+    already_set = set([i.strip() for i in open(ALREADY, 'r', encoding='utf-8')])
     for i in open(SEED_LIST, 'r', encoding='utf-8'):
         info = i.strip().split('\u0001')
         if info[0] in code_list:
-            seeds.append(info)
+            if info[2] not in already_set:
+                seeds.append(info)
+            else:
+                print('该 {0}\t{1}\t片已经存在'.format(info[0], info[2]))
     print('完成种子装载...')
     return seeds
 
@@ -85,6 +90,7 @@ def crawl_video(seeds):
     for seed in seeds:
         number, uri, title, img = seed
         path = m3u8_handler(uri, title)
+        print('开始采集\t{0}\t{1}'.format(number, title))
         if path:
             print('开始下载视频')
             download_video(path)
@@ -97,7 +103,7 @@ def download_video(path):
     多进程为主
     """
     count = 1
-    pool = Pool(10)
+    pool = Pool(15)
     for i in open(path, 'r', encoding='utf-8'):
         info = i.strip()
         if info.startswith('http'):
