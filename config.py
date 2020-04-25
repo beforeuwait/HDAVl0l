@@ -63,7 +63,7 @@ HEADERS_LIST = {
     'sec-fetch-mode': 'navigate',
     'sec-fetch-site': 'same-origin',
     'sec-fetch-user': '?1',
-    'cookie': '_gat_gtag_UA_78207029_10=1; XSRF-TOKEN=eyJpdiI6IlJrV3Axb216cnRqVFM2NXc1WkVWSkE9PSIsInZhbHVlIjoiQ2RzWGZcL0YxMTkzTU01ZGJMQ1hxUEpzVE5iN2RyYk1LKzJkclF4RTBITit3YmlyUTV3cUVWK0NzWEh4U0NMTTYiLCJtYWMiOiI3MmMxOWUwZGRlZjU0ZGI2ZTY4MTRkZjUyYjgxYzMwNjlhZjI3M2U0NTA1NTIxYmZhYjMzNGU5MDg3ZDBmMzg5In0%3D; miao_cn=eyJpdiI6IkVOXC83enRrd3Bmc0FPanBhek5FVGJRPT0iLCJ2YWx1ZSI6IlJoekozbnpOOWFBUVR0VEJYb1BlaFBuSkFoTWpWTXZvbVVESDI4am1Id1RtV3c2WWROTWNSeGIrUFpaRWVqbWciLCJtYWMiOiJkZjYzMjc3Y2U1NjhlYmU0MGI0MDkzOTU1NTFmZmFjMDk2NDIwZDk2ZDBkMmM4MzA0Yjk2ZmUzMzk2ZjIzY2NjIn0%3D; rr=https://cn.ax101.cc/search?q=%E7%BE%8E%E8%85%BF; hello=1; _ga=GA1.2.1911202415.1587790086; _gid=GA1.2.914766122.1587790086',
+    'cookie': 'hello=1; _ga=GA1.2.890790156.1587831033; _gid=GA1.2.1659091950.1587831033; rr=https://cn.ax101.cc/;',
     'upgrade-insecure-requests': '1',
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36'
 }
