@@ -14,6 +14,7 @@
 """
 
 import os
+import re
 import time
 import requests
 from urllib.parse import quote
@@ -21,7 +22,6 @@ from lxml import etree
 from config import URL_ORIGIN
 from config import HEADERS_LIST
 from config import PARAMS_LIST
-from config import PROXY
 from config import REFERER_LIST
 from config import SEED_LIST
 from config import PATH_LIST
@@ -77,8 +77,18 @@ def parse_html(html):
     data = []
     for each in selector.xpath('//div[@class="row"]/ul/li'):
         url = each.xpath('header/h3/a/@href')[0]
-        title = each.xpath('a[@class="cover"]/img/@title')[0].replace('\\', '_').replace('/', '_')
-        img = each.xpath('a[@class="cover"]/img/@data-src')[0] if each.xpath('a[@class="cover"]/img/@data-src') else each.xpath('a[@class="cover"]/img/@src')[0]
+        """
+        # 这个是针对上一版的
+        # title = each.xpath('a[@class="cover"]/img/@title')[0].replace('\\', '_').replace('/', '_')
+        # img = each.xpath('a[@class="cover"]/img/@data-src')[0] if each.xpath('a[@class="cover"]/img/@data-src') else each.xpath('a[@class="cover"]/img/@src')[0]
+        """
+        title = each.xpath('header/h3/a/descendant::*/text()')[0].replace('\r', '').replace('\n', '').replace('\\', '_').replace('/', '_').replace(' ', '')
+        if each.xpath('a[@class="cover"]/img/@onload'):
+            img_onload = each.xpath('a[@class="cover"]/img/@onload')[0]
+            img_2 = re.findall('http.*jpg', img_onload)[0]
+            img = img_2.replace('igstr.hoverfree.com', 'm2.afast.ws')
+        else:
+            img = each.xpath('a[@class="cover"]/img/@data-src')[0].replace('igstr.hoverfree.com', 'm2.afast.ws')
         data.append([url, title, img])
     return data
 
@@ -90,7 +100,7 @@ def do_simple_request(referer, params):
     html = None
     while retry > 0:
         try:
-            resp = requests.get(url=URL_ORIGIN, headers=headers, params=params, proxies=PROXY)
+            resp = requests.get(url=URL_ORIGIN, headers=headers, params=params)
             print(resp.status_code)
             if resp.status_code < 300:
                 html = resp.content.decode('utf-8')
@@ -108,7 +118,7 @@ def download_cover(count, key_word, name,url):
     print('下载图片\t{0}_{1}.jpg'.format(count, name))
     while retry > 0:
         try:
-            resp = requests.get(url=url, proxies=PROXY)
+            resp = requests.get(url=url)
             if resp.status_code < 300:
                 cnt = resp.content
                 with open('{0}/{1}/{2}_{3}.jpg'.format(PATH_LIST, key_word, count, name), 'wb') as f:
