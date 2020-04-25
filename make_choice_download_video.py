@@ -26,11 +26,9 @@ import requests
 from config import SEED_LIST
 from config import HEADERS_VIDEO
 from config import URL_1
-from config import PROXY
 from config import REFERER_1
 from config import PARAMS_1
 from config import S1
-# from config import UX
 from config import TMP_M3U8
 from config import REAL_M3U8
 from config import TMP_TS
@@ -40,18 +38,16 @@ from config import HEADERS_M3U8
 from config import ALREADY
 from multiprocessing import Pool
 from login_model import do_login
+from config import ssn
 
 
 UX = ''
 
-ssn = requests.session()
-
 
 def collect_list():
-    cookie, ux = do_login()
+    ux = do_login()
     global UX
     UX = ux
-    ssn.cookies.update(cookie)
     print('\tcookie装载完毕')
     code_list = []
     while True:
@@ -199,6 +195,7 @@ def m3u8_handler(uri, title):
     params = PARAMS_1
     params.update({'v': video_code,
                    't': t,
+                   'ux': UX,
                    's': s})
     referer = ''.join([REFERER_1, uri])
     print('开始请求第一个链接')

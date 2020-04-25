@@ -1,5 +1,8 @@
 # coding=utf-8
 
+import requests
+
+ssn = requests.session()
 # 登录
 URL_HOME = 'https://cn.ax101.cc/'
 

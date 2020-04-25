@@ -12,8 +12,8 @@ from config import HEADERS_HOME
 from config import EMAIL
 from config import PASSWORD
 from lxml import etree
+from config import ssn
 
-ssn = requests.Session()
 
 def do_login():
     print('请求主页')
@@ -39,8 +39,7 @@ def do_login():
     print('当前cookie,{}'.format(ssn.cookies.items))
     print('找到用户当前的ux')
     ux = get_ux()
-    cookie = ssn.cookies
-    return cookie, ux
+    return ux
 
 
 def visit_home_page():
@@ -60,10 +59,8 @@ def login(data):
 
 def get_ux():
     html = do_request(URL_HOME)
-    with open('1.html', 'w', encoding='utf-8') as f:
-        f.write(html)
-    ux = re.findall('user_id: "(\d{4,9})"', html, re.S)
-    print(ux)
+    ux = re.findall('user_id: "(\d{4,9})"', html, re.S)[0]
+    print('ux:\t',ux)
     return ux
 
 
