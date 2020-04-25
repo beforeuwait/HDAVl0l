@@ -118,7 +118,7 @@ def download_cover(count, key_word, name,url):
     print('下载图片\t{0}_{1}.jpg'.format(count, name))
     while retry > 0:
         try:
-            resp = requests.get(url=url)
+            resp = requests.get(url=url, timeout=15)
             if resp.status_code < 300:
                 cnt = resp.content
                 with open('{0}/{1}/{2}_{3}.jpg'.format(PATH_LIST, key_word, count, name), 'wb') as f:

@@ -1,16 +1,27 @@
 # coding=utf-8
 
-# 代理
-
-PROXY = {
-    'http': '127.0.0.1:55093',
-    'https': '127.0.0.1:55093'
-}
-
 # 登录
 URL_HOME = 'https://cn.ax101.cc/'
 
+URL_LOGIN_PRE = 'https://cn.ax101.cc/login?refer=https%3A%2F%2Fcn%2Eax101%2Ecc'
+
 URL_LOGIN = 'https://cn.ax101.cc/login'
+
+
+HEADERS_HOME = {
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
+    'Accept-Encoding': 'gzip, deflate',
+    'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+    'Cache-Control': 'max-age=0',
+    'Connection': 'keep-alive',
+    'Host': 'cn.ax101.cc',
+    'Sec-Fetch-Mode': 'navigate',
+    'Sec-Fetch-Site': 'same-origin',
+    'Sec-Fetch-User': '?1',
+    'Upgrade-Insecure-Requests': '1',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36'
+}
+
 
 HEADERS_LOGIN = {
     'Accept': '*/*',
@@ -28,12 +39,13 @@ HEADERS_LOGIN = {
     'X-Requested-With': 'XMLHttpRequest'
 }
 
-DATA_LOGIN = {
-    '_token': '',
-    'email': '',
-    'password': '',
-    'gtoken': ''
-}
+
+# ##########
+# 账号密码##
+# #########
+EMAIL = ''
+PASSWORD = ''
+
 
 # 下载 列表
 
@@ -115,7 +127,6 @@ HEADERS_M3U8 = {
 
 S1 = 'avHDl0l.com.av'
 IP = '47.244.148.48'
-UX = '2120015'
 
 
 PARAMS_1 = {

@@ -30,7 +30,7 @@ from config import PROXY
 from config import REFERER_1
 from config import PARAMS_1
 from config import S1
-from config import UX
+# from config import UX
 from config import TMP_M3U8
 from config import REAL_M3U8
 from config import TMP_TS
@@ -39,12 +39,35 @@ from config import IP
 from config import HEADERS_M3U8
 from config import ALREADY
 from multiprocessing import Pool
+from login_model import do_login
 
+
+UX = ''
 
 ssn = requests.session()
 
 
 def collect_list():
+    cookie, ux = do_login()
+    global UX
+    UX = ux
+    ssn.cookies.update(cookie)
+    print('\tcookie装载完毕')
+    code_list = []
+    while True:
+        av_code = input('请输入图片编号, 结束请输入:end。\t')
+        if av_code == 'end':
+            break
+        if av_code in code_list:
+            print('该\t{}\tID已经输入...')
+            continue
+        code_list.append(av_code)
+    code_list.sort()
+    print('当前需要下载的编号为:\t', code_list)
+    return code_list
+
+
+def collect_list_old():
     cookie = input('请输入当前cookie:\t')
     deal_cookie(cookie)
     print('\t注意!!!!!!\n\t\t【不要超过5个，防止cookie过期以及m3u8文件过期】')
