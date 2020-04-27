@@ -113,6 +113,8 @@ def crawl_video(seeds):
         if path:
             print('开始下载视频')
             download_video(path)
+            with open(ALREADY, 'a', encoding='utf-8') as f:
+                f.write(title + '\n')
         # 下载完毕后，删除
 
 
