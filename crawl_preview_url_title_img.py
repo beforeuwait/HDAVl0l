@@ -87,13 +87,14 @@ def parse_html(html):
         # title = each.xpath('a[@class="cover"]/img/@title')[0].replace('\\', '_').replace('/', '_')
         # img = each.xpath('a[@class="cover"]/img/@data-src')[0] if each.xpath('a[@class="cover"]/img/@data-src') else each.xpath('a[@class="cover"]/img/@src')[0]
         """
-        title = each.xpath('header/h3/a/descendant::*/text()')[0].replace('\r', '').replace('\n', '').replace('\\', '_').replace('/', '_').replace(' ', '')
+        title = each.xpath('header/h3/a/descendant::*/text()')[0].replace('\r', '').replace('\n', '').replace('\\', '_').replace('/', '_').replace(' ', '').replace(':', '_')
         if each.xpath('a[@class="cover"]/img/@onload'):
             img_onload = each.xpath('a[@class="cover"]/img/@onload')[0]
-            img = re.findall('http.*jpg', img_onload)[0]
+            img = re.findall('http.*jpg', img_onload)[0].replace('https://m8', 'https://igstr') if re.findall('http.*jpg', img_onload) else None
         else:
-            img = each.xpath('a[@class="cover"]/img/@data-src')[0]
-        data.append([url, title, img])
+            img = each.xpath('a[@class="cover"]/img/@data-src')[0].replace('https://m8', 'https://igstr')
+        if img:
+            data.append([url, title, img])
     return data
 
 
