@@ -16,7 +16,9 @@
 import os
 import re
 import time
+import json
 import requests
+import base64
 from urllib.parse import quote
 from lxml import etree
 from config import URL_ORIGIN
@@ -53,7 +55,7 @@ def crawl_data(key_word, pages):
     current_page = 1
     while current_page <= pages:
         print('采集:\t{0}\t第\t{1}\t页'.format(key_word, current_page))
-        referer = quote(REFERER_LIST.format(key_word, current_page))
+        referer = REFERER_LIST.format(quote(key_word), current_page)
         params.update({'q': key_word, 'p': current_page})
         html = do_simple_request(referer, params)
         data = parse_html(html)
@@ -76,6 +78,9 @@ def parse_html(html):
     selector = etree.HTML(html)
     data = []
     for each in selector.xpath('//div[@class="row"]/ul/li'):
+        if not each.xpath('header/h3/a/@href'):
+            print('当前页没有数据了.....')
+            return
         url = each.xpath('header/h3/a/@href')[0]
         """
         # 这个是针对上一版的
@@ -85,10 +90,9 @@ def parse_html(html):
         title = each.xpath('header/h3/a/descendant::*/text()')[0].replace('\r', '').replace('\n', '').replace('\\', '_').replace('/', '_').replace(' ', '')
         if each.xpath('a[@class="cover"]/img/@onload'):
             img_onload = each.xpath('a[@class="cover"]/img/@onload')[0]
-            img_2 = re.findall('http.*jpg', img_onload)[0]
-            img = img_2.replace('igstr.hoverfree.com', 'm2.afast.ws')
+            img = re.findall('http.*jpg', img_onload)[0]
         else:
-            img = each.xpath('a[@class="cover"]/img/@data-src')[0].replace('igstr.hoverfree.com', 'm2.afast.ws')
+            img = each.xpath('a[@class="cover"]/img/@data-src')[0]
         data.append([url, title, img])
     return data
 
@@ -96,12 +100,13 @@ def parse_html(html):
 def do_simple_request(referer, params):
     retry = 5
     headers = HEADERS_LIST
-    # headers.update({'referer': referer})
+    headers.update({'referer': referer})
     html = None
     while retry > 0:
         try:
             resp = requests.get(url=URL_ORIGIN, headers=headers, params=params)
             print(resp.status_code)
+            print(resp.url)
             if resp.status_code < 300:
                 html = resp.content.decode('utf-8')
                 break
@@ -112,7 +117,7 @@ def do_simple_request(referer, params):
     return html
 
 
-def download_cover(count, key_word, name,url):
+def download_cover(count, key_word, name, url):
     retry = 5
     cnt = None
     print('下载图片\t{0}_{1}.jpg'.format(count, name))
@@ -122,7 +127,7 @@ def download_cover(count, key_word, name,url):
             if resp.status_code < 300:
                 cnt = resp.content
                 with open('{0}/{1}/{2}_{3}.jpg'.format(PATH_LIST, key_word, count, name), 'wb') as f:
-                    f.write(cnt)
+                    f.write(base64.b64decode(json.loads(cnt).get('c')))
                 break
         except Exception as e:
             print('请求出错', e)
@@ -134,6 +139,7 @@ def download_cover(count, key_word, name,url):
 def read_seeds_list_count_num():
     seeds_set = set([i.strip().split('\u0001')[1] for i in open(SEED_LIST, 'r', encoding='utf-8')])
     return seeds_set, len(seeds_set)
+
 
 if __name__ == '__main__':
     input_command()
