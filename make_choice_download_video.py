@@ -33,8 +33,6 @@ from config import TMP_M3U8
 from config import REAL_M3U8
 from config import TMP_TS
 from config import VIDEO_FILE
-from config import IP
-from config import HEADERS_M3U8
 from config import ALREADY
 from multiprocessing import Pool
 from login_model import do_login
@@ -124,7 +122,7 @@ def download_video(path):
     多进程为主
     """
     count = 1
-    pool = Pool(15)
+    pool = Pool(20)
     for i in open(path, 'r', encoding='utf-8'):
         info = i.strip()
         if info.startswith('http'):
@@ -136,11 +134,13 @@ def download_video(path):
     pool.join()
     # 开始验证完整
     print('下载完毕\t验证完整性')
-    while True:
+    retry = 3
+    while retry > 0:
         redownload_list = veriy_tmp_file(count)
         if redownload_list:
             print('经检查不完整, 开始重新下载')
             print('需要重新下载的个数为:\t{}'.format(len(redownload_list)))
+            print(redownload_list)
             pool = Pool(3)
             t = 1
             for i in open(path, 'r', encoding='utf-8'):
@@ -155,6 +155,7 @@ def download_video(path):
         else:
             print('文件完整......\n开始合并')
             break
+        retry -= 1
     # 猜猜这里为啥title我要这么处理?
     title = path.split('/')[2].replace('.m3u8', '')
     all_in_one(count, title)
@@ -164,10 +165,11 @@ def all_in_one(n, title):
     # 合并文件
     with open('{}/{}.ts'.format(VIDEO_FILE, title), 'wb') as f:
         for i in range(1, n):
-            p = open(''.join([TMP_TS, '/{}.ts'.format(i)]), 'rb')
-            f.write(p.read())
-            p.close()
-            os.remove(''.join([TMP_TS, '/{}.ts'.format(i)]))
+            if os.path.exists(''.join([TMP_TS, '/{}.ts'.format(i)])):
+                p = open(''.join([TMP_TS, '/{}.ts'.format(i)]), 'rb')
+                f.write(p.read())
+                p.close()
+                os.remove(''.join([TMP_TS, '/{}.ts'.format(i)]))
 
 
 def veriy_tmp_file(n):
@@ -237,7 +239,6 @@ def deal_m3u8_1(path):
 
 def do_sha256(video_code):
     tm = int(time.time())
-    # cr = '{}{}{}{}{}'.format(S1, video_code, IP, tm, UX)
     cr = '{}{}{}{}'.format(S1, video_code, tm, UX)
     s = hashlib.sha256(cr.encode()).hexdigest()
     return s, tm
@@ -250,7 +251,7 @@ def do_simple_request(referer, params):
     html = None
     while retry > 0:
         try:
-            resp = ssn.get(url=URL_1, headers=headers, params=params)
+            resp = ssn.get(url=URL_1, headers=headers, params=params, timeout=15)
             print(resp.status_code)
             if resp.status_code < 300:
                 html = resp.content.decode('utf-8')
@@ -269,7 +270,7 @@ def do_request(url):
     html = None
     while retry > 0:
         try:
-            resp = ssn.get(url=url, headers=headers)
+            resp = ssn.get(url=url, headers=headers, timeout=15)
             if resp.status_code < 300:
                 html = resp.content.decode('utf-8')
                 break
@@ -286,7 +287,7 @@ def do_no_headers_request(url):
     html = None
     while retry > 0:
         try:
-            resp = requests.get(url=url)
+            resp = requests.get(url=url, timeout=15)
             if resp.status_code < 300:
                 html = resp.content
                 break
