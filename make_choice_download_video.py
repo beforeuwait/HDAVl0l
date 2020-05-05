@@ -53,7 +53,7 @@ def collect_list():
         if av_code == 'end':
             break
         if av_code in code_list:
-            print('该\t{}\tID已经输入...')
+            print('该\t{}\tID已经输入...'.format(av_code))
             continue
         code_list.append(av_code)
     code_list.sort()
@@ -106,6 +106,8 @@ def load_seeds(code_list):
 def crawl_video(seeds):
     for seed in seeds:
         number, uri, title, img = seed
+        if title == '':
+            title = uri.replace('?', '_').replace('=', '_')
         path = m3u8_handler(uri, title)
         print('开始采集\t{0}\t{1}'.format(number, title))
         if path:
@@ -157,7 +159,7 @@ def download_video(path):
             break
         retry -= 1
     # 猜猜这里为啥title我要这么处理?
-    title = path.split('/')[2].replace('.m3u8', '')
+    title = path.split('/')[2].replace('.m3u8', '') if path.split('/')[2] != '' else path.split('/')[3].replace('.m3u8', '')
     all_in_one(count, title)
 
 
@@ -213,13 +215,17 @@ def m3u8_handler(uri, title):
         with open(m3u8_1_path, 'w', encoding='utf-8') as f:
             f.write(m3u8_1)
         hd, uri = deal_m3u8_1(m3u8_1_path)
-        print('当前解析出最高分辨率为:\t{}p'.format(hd))
-        print('开始下载当前m3u8文件....注意该m3u8文件有时效性')
-        m3u8_2 = do_request(''.join([REFERER_1, uri]))
-        m3u8_2_path = '{}/{}.m3u8'.format(REAL_M3U8, title)
-        with open(m3u8_2_path, 'w', encoding='utf-8') as f:
-            f.write(m3u8_2)
-        print('真实 m3u8文件 保存完毕')
+        if uri:
+            print('当前解析出最高分辨率为:\t{}p'.format(hd))
+            print('开始下载当前m3u8文件....注意该m3u8文件有时效性')
+            m3u8_2 = do_request(''.join([REFERER_1, uri]))
+            m3u8_2_path = '{}/{}.m3u8'.format(REAL_M3U8, title)
+            with open(m3u8_2_path, 'w', encoding='utf-8') as f:
+                f.write(m3u8_2)
+            print('真实 m3u8文件 保存完毕')
+        else:
+            print('这个临时m3u8为真实m3u8')
+            m3u8_2_path = m3u8_1_path
         return m3u8_2_path
 
 

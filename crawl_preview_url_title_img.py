@@ -33,7 +33,6 @@ def input_command():
     # 启动时候接收参数
     key_word = input('请输入分类:\t')
     pages = int(input('请输入搜索页数:\t'))
-
     print('当前接收到的参数为:\t{0}\t请求页数为:\t{1}'.format(key_word, pages))
     check_file_exists(key_word)
     crawl_data(key_word, int(pages))
@@ -138,8 +137,15 @@ def download_cover(count, key_word, name, url):
 
 
 def read_seeds_list_count_num():
-    seeds_set = set([i.strip().split('\u0001')[1] for i in open(SEED_LIST, 'r', encoding='utf-8')])
-    return seeds_set, len(seeds_set)
+    # seeds_set = set([i.strip().split('\u0001')[1] for i in open(SEED_LIST, 'r', encoding='utf-8')])
+    # return seeds_set, len(seeds_set)
+    seed_list = []
+    count = 0
+    for i in open(SEED_LIST, 'r', encoding='utf-8'):
+        info = i.strip().split('\u0001')
+        seed_list.append(info[1])
+        count = int(info[0])
+    return set(seed_list), count
 
 
 if __name__ == '__main__':
